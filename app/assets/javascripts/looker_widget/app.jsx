@@ -1,12 +1,12 @@
-var React = require('React'),
-    $     = require('jquery'),
-    Hey   = require('./hey.react.jsx')
-
 $('document').ready(function() {
+  var React   = require('react'),
+      $       = require('jquery');
+      Hey     = require('./components/Hey.react.jsx');
+
   React.render(
     <div>
       <Hey/>
     </div>,
     document.getElementById('react-app')
   );
-})
+});
