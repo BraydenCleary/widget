@@ -29,6 +29,9 @@ gem 'spring',        group: :development
 # Using this looker gem to establish an api connection
 gem 'llooker_sdk', git: 'git@github.com:llooker/ruby_sdk.git'
 
+# ayyyeeee
+gem "httparty"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
