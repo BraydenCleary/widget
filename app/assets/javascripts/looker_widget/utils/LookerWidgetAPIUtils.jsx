@@ -4,7 +4,7 @@ module.exports = {
   getItemizationUPH: function() {
     $.ajax({
       dataType: 'json',
-      url: '/operators_uph'
+      url: '/widgets'
     }).done(function(data) {
       ServerActions.receiveUPH(data);
     }).fail(function(error){
@@ -15,9 +15,8 @@ module.exports = {
   getNewUsersCreated: function() {
     $.ajax({
       dataType: 'json',
-      url: '/users_created'
+      url: '/users_created/index'
     }).done(function(data) {
-      debugger
       ServerActions.receiveNewUsersCreated(data);
     }).fail(function(error){
       // sweetAlert('Error', 'There is a problem fetching the item from the server. Please try refreshing the page.', 'warning');

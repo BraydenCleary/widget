@@ -28,7 +28,7 @@ AppDispatcher.register(function (payload) {
 
   switch(action.type) {
     case Constants.ActionTypes.RECEIVE_NEW_USERS_CREATED:
-      debugger
+      newUsersCreated = action.data[0]['users.count'];
       break;
     default:
       return true;

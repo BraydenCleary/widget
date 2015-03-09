@@ -8,8 +8,6 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :widgets, only: :index
-  resources :users_created, only: :index
-  resources :total_bags_received, only: :index
 
   get '/users_created/index', to: 'users_created#index'
   get '/total_bags_received/index', to: 'total_bags_received#index'

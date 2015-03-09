@@ -10,6 +10,7 @@ var NewUsers = React.createClass({
   },
 
   componentDidMount: function() {
+    ViewActions.getNewUsersCreated();
     this._setUpPolling();
     NewUsersStore.addChangeListener(this._onChange);
   },

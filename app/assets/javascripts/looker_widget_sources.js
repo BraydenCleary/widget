@@ -72,6 +72,7 @@ var Itemization = React.createClass({displayName: "Itemization",
   },
 
   componentDidMount: function() {
+    ViewActions.getItemizationUPH();
     this._setUpPolling();
     ItemizationStore.addChangeListener(this._onChange);
   },
@@ -108,6 +109,7 @@ var NewUsers = React.createClass({displayName: "NewUsers",
   },
 
   componentDidMount: function() {
+    ViewActions.getNewUsersCreated();
     this._setUpPolling();
     NewUsersStore.addChangeListener(this._onChange);
   },
@@ -270,7 +272,7 @@ AppDispatcher.register(function (payload) {
 
   switch(action.type) {
     case Constants.ActionTypes.RECEIVE_NEW_USERS_CREATED:
-      debugger
+      newUsersCreated = action.data[0]['users.count'];
       break;
     default:
       return true;
@@ -290,7 +292,7 @@ module.exports = {
   getItemizationUPH: function() {
     $.ajax({
       dataType: 'json',
-      url: '/operators_uph'
+      url: '/widgets'
     }).done(function(data) {
       ServerActions.receiveUPH(data);
     }).fail(function(error){
@@ -301,9 +303,8 @@ module.exports = {
   getNewUsersCreated: function() {
     $.ajax({
       dataType: 'json',
-      url: '/users_created'
+      url: '/users_created/index'
     }).done(function(data) {
-      debugger
       ServerActions.receiveNewUsersCreated(data);
     }).fail(function(error){
       // sweetAlert('Error', 'There is a problem fetching the item from the server. Please try refreshing the page.', 'warning');

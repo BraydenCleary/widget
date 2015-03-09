@@ -18,6 +18,7 @@ var Itemization = React.createClass({
   },
 
   componentDidMount: function() {
+    ViewActions.getItemizationUPH();
     this._setUpPolling();
     ItemizationStore.addChangeListener(this._onChange);
   },
