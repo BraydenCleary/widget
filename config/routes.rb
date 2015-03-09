@@ -8,7 +8,14 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :widgets, only: :index
+  resources :users_created, only: :index
+  resources :total_bags_received, only: :index
 
+  get '/users_created/index', to: 'users_created#index'
+  get '/total_bags_received/index', to: 'total_bags_received#index'
+  get '/total_bags_processed/index', to: 'total_bags_processed#index'
+  get '/orders/index', to: 'orders#index'
+  get '/average_uph/index', to: 'average_uph#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
