@@ -12,7 +12,7 @@ var Itemization = React.createClass({
   render: function() {
     return (
       <div>
-        <span>{this.state.uph}</span>
+        <span>David U UPH: {this.state.uph}</span>
       </div>
     )
   },

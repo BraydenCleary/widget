@@ -2,7 +2,8 @@ var keyMirror = require('keymirror');
 
 module.exports = {
   ActionTypes: keyMirror({
-    RECEIVE_UPH : null
+    RECEIVE_UPH : null,
+    RECEIVE_NEW_USERS_CREATED : null
   }),
 
   PayloadSources: keyMirror({

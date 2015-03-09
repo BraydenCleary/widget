@@ -9,6 +9,13 @@ module.exports = {
       type: ActionTypes.RECEIVE_UPH,
       data: data
     })
+  },
+
+  receiveNewUsersCreated: function(data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_NEW_USERS_CREATED,
+      data: data
+    })
   }
 }
 
@@ -21,24 +28,30 @@ var AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
 module.exports = {
   getItemizationUPH: function() {
     LookerWidgitAPIUtils.getItemizationUPH();
+  },
+
+  getNewUsersCreated: function() {
+    LookerWidgitAPIUtils.getNewUsersCreated();
   }
 };
 
 },{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx","../utils/LookerWidgetAPIUtils.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/utils/LookerWidgetAPIUtils.jsx"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/app.jsx":[function(require,module,exports){
 var React       = require('react'),
     $           = require('jquery');
-    Itemization = require('./components/Itemization.react.jsx');
+    Itemization = require('./components/Itemization.react.jsx'),
+    NewUsers    = require('./components/NewUsers.react.jsx');
 
 $('document').ready(function() {
   React.render(
     React.createElement("div", null, 
-      React.createElement(Itemization, null)
+      React.createElement(Itemization, null), 
+      React.createElement(NewUsers, null)
     ),
     document.getElementById('react-app')
   );
 });
 
-},{"./components/Itemization.react.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Itemization.react.jsx","jquery":"/Users/braydencleary/Desktop/code/messaging/node_modules/jquery/dist/jquery.js","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Itemization.react.jsx":[function(require,module,exports){
+},{"./components/Itemization.react.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Itemization.react.jsx","./components/NewUsers.react.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/NewUsers.react.jsx","jquery":"/Users/braydencleary/Desktop/code/messaging/node_modules/jquery/dist/jquery.js","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Itemization.react.jsx":[function(require,module,exports){
 var React            = require('react'),
     ItemizationStore = require('../stores/ItemizationStore.jsx'),
     ViewActions      = require('../actions/LookerWidgetViewActions.jsx');
@@ -53,7 +66,7 @@ var Itemization = React.createClass({displayName: "Itemization",
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement("span", null, this.state.uph)
+        React.createElement("span", null, "David U UPH: ", this.state.uph)
       )
     )
   },
@@ -82,12 +95,59 @@ var Itemization = React.createClass({displayName: "Itemization",
 
 module.exports = Itemization;
 
-},{"../actions/LookerWidgetViewActions.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx","../stores/ItemizationStore.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/ItemizationStore.jsx","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx":[function(require,module,exports){
+},{"../actions/LookerWidgetViewActions.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx","../stores/ItemizationStore.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/ItemizationStore.jsx","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/NewUsers.react.jsx":[function(require,module,exports){
+var React         = require('react'),
+    NewUsersStore = require('../stores/NewUsersStore.jsx'),
+    ViewActions   = require('../actions/LookerWidgetViewActions.jsx');
+
+var NewUsers = React.createClass({displayName: "NewUsers",
+  getInitialState: function() {
+    return {
+      newUsers: NewUsersStore.getCurrent()
+    }
+  },
+
+  componentDidMount: function() {
+    this._setUpPolling();
+    NewUsersStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmound: function() {
+    NewUsersStore.addChangeListener(this._onChange);
+  },
+
+  render: function() {
+    return (
+      React.createElement("div", null, 
+        React.createElement("span", null, "New Users Created Today: ", this.state.newUsers)
+      )
+    );
+  },
+
+  _onChange: function() {
+    this.setState({
+      newUsers: NewUsersStore.getCurrent()
+    })
+  },
+
+  _setUpPolling: function() {
+    setInterval(function() {
+      ViewActions.getNewUsersCreated();
+    }, 3000)
+  }
+});
+
+module.exports = NewUsers;
+
+
+
+},{"../actions/LookerWidgetViewActions.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx","../stores/NewUsersStore.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/NewUsersStore.jsx","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx":[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = {
   ActionTypes: keyMirror({
-    RECEIVE_UPH : null
+    RECEIVE_UPH : null,
+    RECEIVE_NEW_USERS_CREATED : null
   }),
 
   PayloadSources: keyMirror({
@@ -179,16 +239,72 @@ AppDispatcher.register(function (payload) {
 
 module.exports = ItemizationStore;
 
-},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx","events":"/Users/braydencleary/Desktop/code/messaging/node_modules/watchify/node_modules/browserify/node_modules/events/events.js","jquery":"/Users/braydencleary/Desktop/code/messaging/node_modules/jquery/dist/jquery.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/utils/LookerWidgetAPIUtils.jsx":[function(require,module,exports){
+},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx","events":"/Users/braydencleary/Desktop/code/messaging/node_modules/watchify/node_modules/browserify/node_modules/events/events.js","jquery":"/Users/braydencleary/Desktop/code/messaging/node_modules/jquery/dist/jquery.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/NewUsersStore.jsx":[function(require,module,exports){
+var assign                = require('object-assign'),
+    EventEmitter          = require('events').EventEmitter,
+    AppDispatcher         = require('../dispatcher/LookerWidgetDispatcher.jsx'),
+    Constants             = require('../constants/LookerWidgetConstants.jsx'),
+    CHANGE_EVENT          = Constants.CHANGE_EVENT,
+    newUsersCreated       = null;
+
+var NewUsersStore = assign({}, EventEmitter.prototype, {
+  getCurrent: function() {
+    return newUsersCreated;
+  },
+
+  emitChange: function() {
+    this.emit(CHANGE_EVENT);
+  },
+
+  addChangeListener: function(callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+});
+
+AppDispatcher.register(function (payload) {
+  var action = payload.action;
+
+  switch(action.type) {
+    case Constants.ActionTypes.RECEIVE_NEW_USERS_CREATED:
+      debugger
+      break;
+    default:
+      return true;
+  }
+
+  NewUsersStore.emitChange();
+
+  return true;
+});
+
+module.exports = NewUsersStore;
+
+},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx","events":"/Users/braydencleary/Desktop/code/messaging/node_modules/watchify/node_modules/browserify/node_modules/events/events.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/utils/LookerWidgetAPIUtils.jsx":[function(require,module,exports){
 var ServerActions = require('../actions/LookerWidgetServerActions.jsx');
 
 module.exports = {
   getItemizationUPH: function() {
     $.ajax({
       dataType: 'json',
-      url: '/widgets'
+      url: '/operators_uph'
     }).done(function(data) {
       ServerActions.receiveUPH(data);
+    }).fail(function(error){
+      // sweetAlert('Error', 'There is a problem fetching the item from the server. Please try refreshing the page.', 'warning');
+    });
+  },
+
+  getNewUsersCreated: function() {
+    $.ajax({
+      dataType: 'json',
+      url: '/users_created'
+    }).done(function(data) {
+      debugger
+      ServerActions.receiveNewUsersCreated(data);
     }).fail(function(error){
       // sweetAlert('Error', 'There is a problem fetching the item from the server. Please try refreshing the page.', 'warning');
     });

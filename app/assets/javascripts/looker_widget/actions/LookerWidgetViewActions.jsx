@@ -6,5 +6,9 @@ var AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
 module.exports = {
   getItemizationUPH: function() {
     LookerWidgitAPIUtils.getItemizationUPH();
+  },
+
+  getNewUsersCreated: function() {
+    LookerWidgitAPIUtils.getNewUsersCreated();
   }
 };
