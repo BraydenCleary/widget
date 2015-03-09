@@ -110,10 +110,10 @@ module.exports = LookerWidgetDispatcher;
 },{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","flux":"/Users/braydencleary/Desktop/code/messaging/node_modules/flux/index.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/ItemizationStore.jsx":[function(require,module,exports){
 var assign        = require('object-assign'),
     EventEmitter  = require('events').EventEmitter,
-    uph           = null,
-    CHANGE_EVENT  = 'change',
     AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
-    Constants     = require('../constants/LookerWidgetConstants.jsx');
+    Constants     = require('../constants/LookerWidgetConstants.jsx'),
+    CHANGE_EVENT  = Constants.CHANGE_EVENT,
+    uph           = null;
 
 var ItemizationStore = assign({}, EventEmitter.prototype, {
   getCurrentUPH: function() {

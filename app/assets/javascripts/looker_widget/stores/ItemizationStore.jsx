@@ -1,9 +1,9 @@
 var assign        = require('object-assign'),
     EventEmitter  = require('events').EventEmitter,
-    uph           = null,
-    CHANGE_EVENT  = 'change',
     AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
-    Constants     = require('../constants/LookerWidgetConstants.jsx');
+    Constants     = require('../constants/LookerWidgetConstants.jsx'),
+    CHANGE_EVENT  = Constants.CHANGE_EVENT,
+    uph           = null;
 
 var ItemizationStore = assign({}, EventEmitter.prototype, {
   getCurrentUPH: function() {
