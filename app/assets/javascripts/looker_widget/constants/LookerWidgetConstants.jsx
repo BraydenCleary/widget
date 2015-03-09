@@ -2,7 +2,7 @@ var keyMirror = require('keymirror');
 
 module.exports = {
   ActionTypes: keyMirror({
-    YO : null
+    RECEIVE_ITEMIZATION_UPH : null
   }),
 
   PayloadSources: keyMirror({

@@ -1,13 +1,13 @@
-var assign = require('object-assign'),
-    EventEmitter = require('events').EventEmitter,
-    yo = 0,
-    CHANGE_EVENT = 'change',
+var assign        = require('object-assign'),
+    EventEmitter  = require('events').EventEmitter,
+    uph           = null,
+    CHANGE_EVENT  = 'change',
     AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
     Constants     = require('../constants/LookerWidgetConstants.jsx');
 
-var YoStore = assign({}, EventEmitter.prototype, {
-  getCurrent: function() {
-    return yo;
+var ItemizationStore = assign({}, EventEmitter.prototype, {
+  getCurrentUPH: function() {
+    return uph;
   },
 
   emitChange: function() {
@@ -27,16 +27,16 @@ AppDispatcher.register(function (payload) {
   var action = payload.action;
 
   switch(action.type) {
-    case Constants.ActionTypes.YO:
-      yo++
+    case Constants.ActionTypes.RECEIVE_ITEMIZATION_UPH:
+      // set uph
       break;
     default:
       return true;
   }
 
-  YoStore.emitChange();
+  ItemizationStore.emitChange();
 
   return true;
 });
 
-module.exports = YoStore;
+module.exports = ItemizationStore;

@@ -1,11 +1,11 @@
 $('document').ready(function() {
-  var React   = require('react'),
-      $       = require('jquery');
-      Hey     = require('./components/Hey.react.jsx');
+  var React       = require('react'),
+      $           = require('jquery');
+      Itemization = require('./components/Itemization.react.jsx');
 
   React.render(
     <div>
-      <Hey/>
+      <Itemization/>
     </div>,
     document.getElementById('react-app')
   );

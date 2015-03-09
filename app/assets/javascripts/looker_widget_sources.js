@@ -1,9 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx":[function(require,module,exports){
 'use strict';
 
-var AppDispatcher    = require('../dispatcher/LookerWidgetDispatcher.jsx'),
-    Constants        = require('../constants/LookerWidgetConstants.jsx'),
-    ActionTypes      = Constants.ActionTypes;
+var AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
+    Constants     = require('../constants/LookerWidgetConstants.jsx'),
+    ActionTypes   = Constants.ActionTypes;
 
 module.exports = {
   yo: function(location_code) {
@@ -15,65 +15,61 @@ module.exports = {
 
 },{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/app.jsx":[function(require,module,exports){
 $('document').ready(function() {
-  var React   = require('react'),
-      $       = require('jquery');
-      Hey     = require('./components/Hey.react.jsx');
+  var React       = require('react'),
+      $           = require('jquery');
+      Itemization = require('./components/Itemization.react.jsx');
 
   React.render(
     React.createElement("div", null, 
-      React.createElement(Hey, null)
+      React.createElement(Itemization, null)
     ),
     document.getElementById('react-app')
   );
 });
 
-},{"./components/Hey.react.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Hey.react.jsx","jquery":"/Users/braydencleary/Desktop/code/messaging/node_modules/jquery/dist/jquery.js","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Hey.react.jsx":[function(require,module,exports){
-var React = require('react'),
-    YoStore = require('../stores/YoStore.jsx'),
-    ViewActions = require('../actions/LookerWidgetViewActions.jsx')
+},{"./components/Itemization.react.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Itemization.react.jsx","jquery":"/Users/braydencleary/Desktop/code/messaging/node_modules/jquery/dist/jquery.js","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Itemization.react.jsx":[function(require,module,exports){
+var React            = require('react'),
+    ItemizationStore = require('../stores/ItemizationStore.jsx'),
+    ViewActions      = require('../actions/LookerWidgetViewActions.jsx');
 
-var Hey = React.createClass({displayName: "Hey",
+var Itemization = React.createClass({displayName: "Itemization",
   getInitialState: function() {
     return {
-      yo: YoStore.getCurrent()
+      uph: ItemizationStore.getCurrentUPH()
     }
   },
 
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement("span", {onClick: this._yo}, this.state.yo)
+        React.createElement("span", null, this.state.uph)
       )
     )
   },
 
   componentDidMount: function() {
-    YoStore.addChangeListener(this._onChange);
+    ItemizationStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
-    YoStore.removeChangeListener(this._onChange);
-  },
-
-  _yo: function() {
-    ViewActions.yo()
+    ItemizationStore.removeChangeListener(this._onChange);
   },
 
   _onChange: function() {
     this.setState({
-      yo: YoStore.getCurrent()
+      uph: ItemizationStore.getCurrentUPH()
     })
   }
 });
 
-module.exports = Hey;
+module.exports = Itemization;
 
-},{"../actions/LookerWidgetViewActions.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx","../stores/YoStore.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/YoStore.jsx","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx":[function(require,module,exports){
+},{"../actions/LookerWidgetViewActions.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx","../stores/ItemizationStore.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/ItemizationStore.jsx","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx":[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = {
   ActionTypes: keyMirror({
-    YO : null
+    RECEIVE_ITEMIZATION_UPH : null
   }),
 
   PayloadSources: keyMirror({
@@ -85,10 +81,10 @@ module.exports = {
 };
 
 },{"keymirror":"/Users/braydencleary/Desktop/code/messaging/node_modules/keymirror/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx":[function(require,module,exports){
-var Constants         = require('../constants/LookerWidgetConstants.jsx'),
-    Dispatcher        = require('flux').Dispatcher,
-    assign            = require('object-assign'),
-    PayloadSources    = Constants.PayloadSources;
+var Constants      = require('../constants/LookerWidgetConstants.jsx'),
+    Dispatcher     = require('flux').Dispatcher,
+    assign         = require('object-assign'),
+    PayloadSources = Constants.PayloadSources;
 
 var LookerWidgetDispatcher = assign(new Dispatcher(), {
 
@@ -111,17 +107,17 @@ var LookerWidgetDispatcher = assign(new Dispatcher(), {
 
 module.exports = LookerWidgetDispatcher;
 
-},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","flux":"/Users/braydencleary/Desktop/code/messaging/node_modules/flux/index.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/YoStore.jsx":[function(require,module,exports){
-var assign = require('object-assign'),
-    EventEmitter = require('events').EventEmitter,
-    yo = 0,
-    CHANGE_EVENT = 'change',
+},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","flux":"/Users/braydencleary/Desktop/code/messaging/node_modules/flux/index.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/ItemizationStore.jsx":[function(require,module,exports){
+var assign        = require('object-assign'),
+    EventEmitter  = require('events').EventEmitter,
+    uph           = null,
+    CHANGE_EVENT  = 'change',
     AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
     Constants     = require('../constants/LookerWidgetConstants.jsx');
 
-var YoStore = assign({}, EventEmitter.prototype, {
-  getCurrent: function() {
-    return yo;
+var ItemizationStore = assign({}, EventEmitter.prototype, {
+  getCurrentUPH: function() {
+    return uph;
   },
 
   emitChange: function() {
@@ -141,19 +137,19 @@ AppDispatcher.register(function (payload) {
   var action = payload.action;
 
   switch(action.type) {
-    case Constants.ActionTypes.YO:
-      yo++
+    case Constants.ActionTypes.RECEIVE_ITEMIZATION_UPH:
+      // set uph
       break;
     default:
       return true;
   }
 
-  YoStore.emitChange();
+  ItemizationStore.emitChange();
 
   return true;
 });
 
-module.exports = YoStore;
+module.exports = ItemizationStore;
 
 },{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx","events":"/Users/braydencleary/Desktop/code/messaging/node_modules/watchify/node_modules/browserify/node_modules/events/events.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/node_modules/flux/index.js":[function(require,module,exports){
 /**

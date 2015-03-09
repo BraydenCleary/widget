@@ -1,7 +1,7 @@
-var Constants         = require('../constants/LookerWidgetConstants.jsx'),
-    Dispatcher        = require('flux').Dispatcher,
-    assign            = require('object-assign'),
-    PayloadSources    = Constants.PayloadSources;
+var Constants      = require('../constants/LookerWidgetConstants.jsx'),
+    Dispatcher     = require('flux').Dispatcher,
+    assign         = require('object-assign'),
+    PayloadSources = Constants.PayloadSources;
 
 var LookerWidgetDispatcher = assign(new Dispatcher(), {
 
