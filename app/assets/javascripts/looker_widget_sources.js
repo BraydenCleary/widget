@@ -29,7 +29,6 @@ $('document').ready(function() {
 
 },{"./components/Hey.react.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Hey.react.jsx","jquery":"/Users/braydencleary/Desktop/code/messaging/node_modules/jquery/dist/jquery.js","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/Hey.react.jsx":[function(require,module,exports){
 var React = require('react'),
-    Foo   = require('./foo.react.jsx'),
     YoStore = require('../stores/YoStore.jsx'),
     ViewActions = require('../actions/LookerWidgetViewActions.jsx')
 
@@ -43,8 +42,7 @@ var Hey = React.createClass({displayName: "Hey",
   render: function() {
     return (
       React.createElement("div", null, 
-        React.createElement("span", {onClick: this._yo}, this.state.yo), 
-        React.createElement(Foo, null)
+        React.createElement("span", {onClick: this._yo}, this.state.yo)
       )
     )
   },
@@ -70,20 +68,7 @@ var Hey = React.createClass({displayName: "Hey",
 
 module.exports = Hey;
 
-},{"../actions/LookerWidgetViewActions.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx","../stores/YoStore.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/YoStore.jsx","./foo.react.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/foo.react.jsx","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/components/foo.react.jsx":[function(require,module,exports){
-var React = require('react');
-
-module.exports = React.createClass({displayName: "exports",
-  render: function() {
-    return (
-      React.createElement("div", null, 
-        "foo"
-      )
-    )
-  }
-});
-
-},{"react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx":[function(require,module,exports){
+},{"../actions/LookerWidgetViewActions.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx","../stores/YoStore.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/YoStore.jsx","react":"/Users/braydencleary/Desktop/code/messaging/node_modules/react/react.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx":[function(require,module,exports){
 var keyMirror = require('keymirror');
 
 module.exports = {

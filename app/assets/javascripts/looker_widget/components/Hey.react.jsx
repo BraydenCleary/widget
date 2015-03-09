@@ -1,5 +1,4 @@
 var React = require('react'),
-    Foo   = require('./foo.react.jsx'),
     YoStore = require('../stores/YoStore.jsx'),
     ViewActions = require('../actions/LookerWidgetViewActions.jsx')
 
@@ -14,7 +13,6 @@ var Hey = React.createClass({
     return (
       <div>
         <span onClick={this._yo}>{this.state.yo}</span>
-        <Foo/>
       </div>
     )
   },
