@@ -19,8 +19,8 @@
     "watchify": "~> 2.2.1"
   },
   "scripts": {
-    "build-messaging"   : "browserify app/assets/javascripts/messaging/app.js > app/assets/javascripts/messaging_sources.js",
-    "watch-messaging"   : "watchify app/assets/javascripts/messaging/app.js -o app/assets/javascripts/messaging_sources.js",
+    "build-looker-widget"   : "browserify app/assets/javascripts/looker_widget/app.jsx > app/assets/javascripts/looker_widget_sources.js",
+    "watch-looker-widget"   : "watchify app/assets/javascripts/looker_widget/app.jsx -o app/assets/javascripts/looker_widget_sources.js",
     "test"              : "jest"
   },
   "browserify": {

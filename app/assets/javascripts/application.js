@@ -11,8 +11,7 @@
 // about supported directives.
 //
 //= require jquery
-//= require messaging_sources
+//= require looker_widget_sources
 //= require jquery_ujs
 //= require turbolinks
-
 //= require_tree .
