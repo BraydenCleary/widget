@@ -1,8 +1,8 @@
-$('document').ready(function() {
-  var React       = require('react'),
-      $           = require('jquery');
-      Itemization = require('./components/Itemization.react.jsx');
+var React       = require('react'),
+    $           = require('jquery');
+    Itemization = require('./components/Itemization.react.jsx');
 
+$('document').ready(function() {
   React.render(
     <div>
       <Itemization/>

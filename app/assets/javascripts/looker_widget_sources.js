@@ -1,24 +1,35 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx":[function(require,module,exports){
-'use strict';
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetServerActions.jsx":[function(require,module,exports){
+var AppDispatcher    = require('../dispatcher/LookerWidgetDispatcher.jsx'),
+    Constants        = require('../constants/LookerWidgetConstants.jsx'),
+    ActionTypes      = Constants.ActionTypes;
 
+module.exports = {
+  receiveUPH: function(data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_UPH,
+      data: data
+    })
+  }
+}
+
+},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetViewActions.jsx":[function(require,module,exports){
 var AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
     Constants     = require('../constants/LookerWidgetConstants.jsx'),
+    LookerWidgitAPIUtils = require('../utils/LookerWidgetAPIUtils.jsx'),
     ActionTypes   = Constants.ActionTypes;
 
 module.exports = {
-  yo: function(location_code) {
-    AppDispatcher.handleViewAction({
-      type: ActionTypes.YO
-    });
+  getItemizationUPH: function() {
+    LookerWidgitAPIUtils.getItemizationUPH();
   }
 };
 
-},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/app.jsx":[function(require,module,exports){
-$('document').ready(function() {
-  var React       = require('react'),
-      $           = require('jquery');
-      Itemization = require('./components/Itemization.react.jsx');
+},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx","../utils/LookerWidgetAPIUtils.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/utils/LookerWidgetAPIUtils.jsx"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/app.jsx":[function(require,module,exports){
+var React       = require('react'),
+    $           = require('jquery');
+    Itemization = require('./components/Itemization.react.jsx');
 
+$('document').ready(function() {
   React.render(
     React.createElement("div", null, 
       React.createElement(Itemization, null)
@@ -48,6 +59,7 @@ var Itemization = React.createClass({displayName: "Itemization",
   },
 
   componentDidMount: function() {
+    this._setUpPolling();
     ItemizationStore.addChangeListener(this._onChange);
   },
 
@@ -59,6 +71,12 @@ var Itemization = React.createClass({displayName: "Itemization",
     this.setState({
       uph: ItemizationStore.getCurrentUPH()
     })
+  },
+
+  _setUpPolling: function() {
+    setInterval(function() {
+      ViewActions.getItemizationUPH();
+    }, 3000);
   }
 });
 
@@ -69,7 +87,7 @@ var keyMirror = require('keymirror');
 
 module.exports = {
   ActionTypes: keyMirror({
-    RECEIVE_ITEMIZATION_UPH : null
+    RECEIVE_UPH : null
   }),
 
   PayloadSources: keyMirror({
@@ -108,12 +126,22 @@ var LookerWidgetDispatcher = assign(new Dispatcher(), {
 module.exports = LookerWidgetDispatcher;
 
 },{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","flux":"/Users/braydencleary/Desktop/code/messaging/node_modules/flux/index.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/stores/ItemizationStore.jsx":[function(require,module,exports){
-var assign        = require('object-assign'),
-    EventEmitter  = require('events').EventEmitter,
-    AppDispatcher = require('../dispatcher/LookerWidgetDispatcher.jsx'),
-    Constants     = require('../constants/LookerWidgetConstants.jsx'),
-    CHANGE_EVENT  = Constants.CHANGE_EVENT,
-    uph           = null;
+var assign                = require('object-assign'),
+    EventEmitter          = require('events').EventEmitter,
+    AppDispatcher         = require('../dispatcher/LookerWidgetDispatcher.jsx'),
+    Constants             = require('../constants/LookerWidgetConstants.jsx'),
+    CHANGE_EVENT          = Constants.CHANGE_EVENT,
+    uph                   = null,
+    CURRENT_OPERATOR_NAME = "david u",
+    $                     = require('jquery');
+
+function _setUPHForOperator(data) {
+  $.each(data, function(index, itemizer_uph) {
+    if (itemizer_uph['operators.name'] == CURRENT_OPERATOR_NAME) {
+      uph = itemizer_uph['operator_sessions.itemization_UPH'];
+    }
+  })
+}
 
 var ItemizationStore = assign({}, EventEmitter.prototype, {
   getCurrentUPH: function() {
@@ -137,8 +165,8 @@ AppDispatcher.register(function (payload) {
   var action = payload.action;
 
   switch(action.type) {
-    case Constants.ActionTypes.RECEIVE_ITEMIZATION_UPH:
-      // set uph
+    case Constants.ActionTypes.RECEIVE_UPH:
+      _setUPHForOperator(action.data);
       break;
     default:
       return true;
@@ -151,7 +179,23 @@ AppDispatcher.register(function (payload) {
 
 module.exports = ItemizationStore;
 
-},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx","events":"/Users/braydencleary/Desktop/code/messaging/node_modules/watchify/node_modules/browserify/node_modules/events/events.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/node_modules/flux/index.js":[function(require,module,exports){
+},{"../constants/LookerWidgetConstants.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/constants/LookerWidgetConstants.jsx","../dispatcher/LookerWidgetDispatcher.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/dispatcher/LookerWidgetDispatcher.jsx","events":"/Users/braydencleary/Desktop/code/messaging/node_modules/watchify/node_modules/browserify/node_modules/events/events.js","jquery":"/Users/braydencleary/Desktop/code/messaging/node_modules/jquery/dist/jquery.js","object-assign":"/Users/braydencleary/Desktop/code/messaging/node_modules/object-assign/index.js"}],"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/utils/LookerWidgetAPIUtils.jsx":[function(require,module,exports){
+var ServerActions = require('../actions/LookerWidgetServerActions.jsx');
+
+module.exports = {
+  getItemizationUPH: function() {
+    $.ajax({
+      dataType: 'json',
+      url: '/widgets'
+    }).done(function(data) {
+      ServerActions.receiveUPH(data);
+    }).fail(function(error){
+      // sweetAlert('Error', 'There is a problem fetching the item from the server. Please try refreshing the page.', 'warning');
+    });
+  }
+};
+
+},{"../actions/LookerWidgetServerActions.jsx":"/Users/braydencleary/Desktop/code/messaging/app/assets/javascripts/looker_widget/actions/LookerWidgetServerActions.jsx"}],"/Users/braydencleary/Desktop/code/messaging/node_modules/flux/index.js":[function(require,module,exports){
 /**
  * Copyright (c) 2014, Facebook, Inc.
  * All rights reserved.

@@ -1,12 +1,10 @@
-'use strict';
-
-var ServerActions = require('../actions/LookerWidgetServerActionCreators');
+var ServerActions = require('../actions/LookerWidgetServerActions.jsx');
 
 module.exports = {
-  fetchBrand: function(brandId) {
+  getItemizationUPH: function() {
     $.ajax({
       dataType: 'json',
-      url: //
+      url: '/widgets'
     }).done(function(data) {
       ServerActions.receiveUPH(data);
     }).fail(function(error){
